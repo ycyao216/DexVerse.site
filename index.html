@@ -1,0 +1,526 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <title>DexVerse: A Modular Benchmark for Multi-Task, Multi-Embodiment Dexterous Manipulation</title>
+  <link rel="icon" type="image/png" href="static/logo/favicon.png">
+
+  <meta name="description" content="DexVerse: a modular benchmark for multi-task, multi-embodiment dexterous manipulation — 100 tasks, 3 robot arms, 6 dexterous hands, and 3,180 teleoperated demonstrations.">
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="DexVerse: A Modular Benchmark for Multi-Task, Multi-Embodiment Dexterous Manipulation">
+  <meta property="og:description" content="A modular benchmark for multi-task, multi-embodiment dexterous manipulation.">
+
+  <link rel="stylesheet" href="static/css/site.css">
+</head>
+<body>
+  <a class="skip-link" href="#main">Skip to content</a>
+
+  <header class="site-header">
+    <nav class="nav" aria-label="Page sections">
+      <a href="#overview-video">Video</a>
+      <a href="#abstract">Abstract</a>
+      <a href="#task-variation">Tasks</a>
+      <a href="#visual-variation">Visual</a>
+      <a href="#robot-variation">Robots</a>
+      <a href="#long-horizon">Long-Horizon</a>
+      <a href="#system-design">System</a>
+      <a href="#baselines">Baselines</a>
+      <a href="#bibtex">BibTeX</a>
+    </nav>
+  </header>
+
+  <main id="main">
+    <section class="hero section">
+      <div class="container">
+        <div class="hero-copy">
+          <h1 class="hero-title">
+            <img class="hero-logo" src="static/logo/dexverse_logo_trimmed.png" alt="DexVerse">
+            <span class="hero-title-text">A Modular Benchmark for Multi-Task, Multi-Embodiment Dexterous Manipulation</span>
+          </h1>
+
+          <div class="author-block">
+            <p class="author-list">
+              <span class="author">Yunchao Yao<sup>1*</sup></span>
+              <span class="author">Zhuxiu Xu<sup>1,2*</sup></span>
+              <span class="author">Tianqi Zhang<sup>1</sup></span>
+              <span class="author">Sikai Li<sup>1</sup></span>
+              <span class="author">Zhenyu Wei<sup>1</sup></span>
+              <span class="author">Feng Chen<sup>2</sup></span>
+              <span class="author">Dihong Huang<sup>1</sup></span>
+              <span class="author">Kechang Wan<sup>1</sup></span>
+              <span class="author">Chenyang Ma<sup>1</sup></span>
+              <span class="author">Shuqi Zhao<sup>3</sup></span>
+              <span class="author">Shenghua Gao<sup>2</sup></span>
+              <span class="author">Masayoshi Tomizuka<sup>3</sup></span>
+              <span class="author">Yi Ma<sup>2</sup></span>
+              <span class="author">Mingyu Ding<sup>1&dagger;</sup></span>
+            </p>
+            <p class="affiliation-list">
+              <span class="affiliation"><sup>1</sup>UNC-Chapel Hill</span>
+              <span class="affiliation"><sup>2</sup>University of Hong Kong</span>
+              <span class="affiliation"><sup>3</sup>UC Berkeley</span>
+            </p>
+            <p class="author-notes">
+              <sup>*</sup>Equal contribution &nbsp;&nbsp; <sup>&dagger;</sup>Corresponding author
+            </p>
+          </div>
+
+          <!--
+            TODO: These are disabled "(coming soon)" placeholders. When each resource goes live,
+            replace the <span> with an <a class="link-button" href="..." target="_blank" rel="noopener">,
+            keep the inner icon + label, and drop the is-disabled class and the (coming soon) tag.
+            PDF was at static/DexVerse_CoRL_2026.pdf (currently excluded from the release repo).
+          -->
+          <div class="hero-links">
+            <span class="link-button is-disabled" aria-disabled="true">
+              <svg aria-hidden="true" viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="9" y1="13" x2="15" y2="13"/><line x1="9" y1="17" x2="15" y2="17"/></svg>
+              PDF <span class="soon-tag">(coming soon)</span>
+            </span>
+            <span class="link-button is-disabled" aria-disabled="true">
+              <svg aria-hidden="true" viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg>
+              arXiv <span class="soon-tag">(coming soon)</span>
+            </span>
+            <span class="link-button is-disabled" aria-disabled="true">
+              <svg aria-hidden="true" viewBox="0 0 16 16" width="16" height="16" fill="currentColor"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27s1.36.09 2 .27c1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.01 8.01 0 0 0 16 8c0-4.42-3.58-8-8-8z"/></svg>
+              Code <span class="soon-tag">(coming soon)</span>
+            </span>
+            <span class="link-button is-disabled" aria-disabled="true">
+              <span class="link-button-emoji" aria-hidden="true">&#129303;</span>
+              Data <span class="soon-tag">(coming soon)</span>
+            </span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="overview-video" class="section section-tight">
+      <div class="container">
+        <div class="section-heading">
+          <h2>Video</h2>
+          <!--
+            TODO: Keep the final video short.
+            CoRL encourages a video under 3 minutes; use mp4/H.264 for portability.
+          -->
+        </div>
+
+        <figure class="video-block">
+          <!--
+            TODO:
+            1. Put the video at static/videos/overview.mp4.
+            2. Put a poster frame at static/images/overview-poster.jpg.
+          -->
+          <div class="video-frame video-frame-large">
+            <video controls muted playsinline preload="metadata" poster="static/images/overview-poster.jpg">
+              <source src="static/videos/overview.mp4" type="video/mp4">
+            </video>
+          </div>
+        </figure>
+      </div>
+    </section>
+
+    <section id="abstract" class="section section-muted">
+      <div class="container narrow">
+        <div class="section-heading centered">
+          <h2>Abstract</h2>
+        </div>
+
+        <!-- NOTE: Keep wording synchronized with the paper PDF. -->
+        <p class="abstract-text">
+          Building general-purpose dexterous manipulation policies requires benchmarks that go beyond
+          isolated tasks and evaluate policies across diverse interaction modes, sensory conditions, and
+          robot embodiments. However, existing benchmarks remain limited in task diversity, embodiment
+          coverage, or controllable visual variation, hindering studies of cross-task and cross-embodiment
+          generalization. We present <strong>DexVerse</strong>, a large-scale and modular benchmark for
+          dexterous manipulation. DexVerse includes 100 tasks spanning a broad range of manipulation skills,
+          including object grasping and relocation, articulated-object interaction, functional tool use,
+          bimanual coordination, non-prehensile control, contact-rich behaviors, multi-goal execution, and
+          long-horizon multi-stage task completion. It supports 3 robot arms and 6 dexterous hands, and is
+          extensible to new tasks, assets, and embodiments. To evaluate visuomotor generalization, DexVerse
+          provides configurable visual variations in textures, background, lighting, and camera viewpoints.
+          We further provide a VR-based teleoperation interface and 3,180 demonstrations with synchronized
+          proprioceptive, RGB, depth, point-cloud, and state observations. We benchmark representative
+          methods, including Diffusion Policy, DP3, OpenVLA, and π<sub>0.5</sub>, across 19 tasks. Results
+          reveal substantial challenges in task generalization and visuomotor robustness, establishing
+          DexVerse as a testbed for general-purpose dexterous manipulation.
+        </p>
+      </div>
+    </section>
+
+    <section id="task-variation" class="section">
+      <div class="container">
+        <div class="section-heading">
+          <h2>Task Variation</h2>
+          <p class="section-lead">
+            DexVerse contains <strong>100 dexterous manipulation tasks</strong> organized into 8 categories: primitive, functional, articulation, non-prehensile, contact-rich, bimanual, multi-goal,
+            and long-horizon. The tasks are grouped by the dominant interaction pattern and manipulation
+            challenge. We provide <strong>3,180 demonstrations in total</strong>: 56 short-horizon tasks with
+            <strong>50 trajectories each</strong>, 5 long-horizon tasks with <strong>20 trajectories each</strong>,
+            plus <strong>1 trajectory on each of 5 alternative robot embodiments</strong> for every short-horizon
+            task. The 56 short-horizon tasks are presented below, and the long-horizon tasks are showcased in the
+            <a href="#long-horizon">Long-Horizon section</a>. Filter by category and use the arrows to browse
+            representative demos, each paired with its description and success condition.
+          </p>
+        </div>
+
+        <!--
+          TODO:
+          Task cards are generated from static/data/tasks.js (window.DEXVERSE_TASKS).
+          Put each task demo video at:
+            static/videos/task-variation/{TaskName}.mp4
+          Put each poster frame at:
+            static/images/task-variation/{TaskName}.jpg
+        -->
+        <div id="task-demo-toolbar" class="task-toolbar" aria-label="Task demo category filters">
+            <button class="task-filter is-active" type="button" data-category="all">All Tasks</button>
+          </div>
+
+          <div class="carousel" data-carousel>
+            <button class="carousel-button" type="button" data-carousel-prev aria-label="Previous task demos">‹</button>
+            <div class="carousel-viewport">
+              <div id="task-demo-grid" class="demo-grid carousel-track">
+                <p class="loading-note">Loading task demos...</p>
+              </div>
+            </div>
+            <button class="carousel-button" type="button" data-carousel-next aria-label="Next task demos">›</button>
+          </div>
+      </div>
+    </section>
+
+    <section id="visual-variation" class="section section-muted">
+      <div class="container">
+        <div class="section-heading">
+          <h2>Visual Variation</h2>
+          <p class="section-lead">
+            When visual randomization is enabled, appearance is sampled at reset from predefined libraries. Variations includes table materials, lighting, background HDR skyboxes, exposure, and color
+            temperature. The task objective and success conditions do not need to be modified. DexVerse also
+            supports camera-viewpoint changes, so the same task can be observed under different conditions.
+          </p>
+        </div>
+
+        <!--
+          TODO:
+          Put visual variation videos at:
+            static/videos/visual-variation/{material|lighting|hdr}/{TaskName}.mp4
+          Put poster frames at:
+            static/images/visual-variation/{material|lighting|hdr}/{TaskName}.jpg
+        -->
+          <div class="visual-group">
+            <div class="visual-group-head">
+              <h4>Material</h4>
+              <p>Object and table materials resampled at reset.</p>
+            </div>
+            <div class="demo-grid visual-grid">
+              <article class="demo-card">
+                <div class="video-frame">
+                  <video controls muted playsinline preload="metadata" poster="static/images/visual-variation/material/HammerStrike.jpg">
+                    <source src="static/videos/visual-variation/material/HammerStrike.mp4" type="video/mp4">
+                  </video>
+                  <span class="replace-note">material/HammerStrike.mp4</span>
+                </div>
+                <h4><code>FunctionalHammerStrike</code></h4>
+              </article>
+
+              <article class="demo-card">
+                <div class="video-frame">
+                  <video controls muted playsinline preload="metadata" poster="static/images/visual-variation/material/InsertPen.jpg">
+                    <source src="static/videos/visual-variation/material/InsertPen.mp4" type="video/mp4">
+                  </video>
+                  <span class="replace-note">material/InsertPen.mp4</span>
+                </div>
+                <h4><code>InsertPen</code></h4>
+              </article>
+
+              <article class="demo-card">
+                <div class="video-frame">
+                  <video controls muted playsinline preload="metadata" poster="static/images/visual-variation/material/PickThinObjectFromContainer.jpg">
+                    <source src="static/videos/visual-variation/material/PickThinObjectFromContainer.mp4" type="video/mp4">
+                  </video>
+                  <span class="replace-note">material/PickThinObjectFromContainer.mp4</span>
+                </div>
+                <h4><code>PickThinObjectFromContainer</code></h4>
+              </article>
+            </div>
+          </div>
+
+          <div class="visual-group">
+            <div class="visual-group-head">
+              <h4>Lighting</h4>
+              <p>Light direction, intensity, and color temperature varied.</p>
+            </div>
+            <div class="demo-grid visual-grid">
+              <article class="demo-card">
+                <div class="video-frame">
+                  <video controls muted playsinline preload="metadata" poster="static/images/visual-variation/lighting/HammerStrike.jpg">
+                    <source src="static/videos/visual-variation/lighting/HammerStrike.mp4" type="video/mp4">
+                  </video>
+                  <span class="replace-note">lighting/HammerStrike.mp4</span>
+                </div>
+                <h4><code>FunctionalHammerStrike</code></h4>
+              </article>
+
+              <article class="demo-card">
+                <div class="video-frame">
+                  <video controls muted playsinline preload="metadata" poster="static/images/visual-variation/lighting/InsertPen.jpg">
+                    <source src="static/videos/visual-variation/lighting/InsertPen.mp4" type="video/mp4">
+                  </video>
+                  <span class="replace-note">lighting/InsertPen.mp4</span>
+                </div>
+                <h4><code>InsertPen</code></h4>
+              </article>
+
+              <article class="demo-card">
+                <div class="video-frame">
+                  <video controls muted playsinline preload="metadata" poster="static/images/visual-variation/lighting/PickThinObjectFromContainer.jpg">
+                    <source src="static/videos/visual-variation/lighting/PickThinObjectFromContainer.mp4" type="video/mp4">
+                  </video>
+                  <span class="replace-note">lighting/PickThinObjectFromContainer.mp4</span>
+                </div>
+                <h4><code>PickThinObjectFromContainer</code></h4>
+              </article>
+            </div>
+          </div>
+
+          <div class="visual-group">
+            <div class="visual-group-head">
+              <h4>HDR Background</h4>
+              <p>Background skybox swapped from a library of HDR environments.</p>
+            </div>
+            <div class="demo-grid visual-grid">
+              <article class="demo-card">
+                <div class="video-frame">
+                  <video controls muted playsinline preload="metadata" poster="static/images/visual-variation/hdr/HammerStrike.jpg">
+                    <source src="static/videos/visual-variation/hdr/HammerStrike.mp4" type="video/mp4">
+                  </video>
+                  <span class="replace-note">hdr/HammerStrike.mp4</span>
+                </div>
+                <h4><code>FunctionalHammerStrike</code></h4>
+              </article>
+
+              <article class="demo-card">
+                <div class="video-frame">
+                  <video controls muted playsinline preload="metadata" poster="static/images/visual-variation/hdr/InsertPen.jpg">
+                    <source src="static/videos/visual-variation/hdr/InsertPen.mp4" type="video/mp4">
+                  </video>
+                  <span class="replace-note">hdr/InsertPen.mp4</span>
+                </div>
+                <h4><code>InsertPen</code></h4>
+              </article>
+
+              <article class="demo-card">
+                <div class="video-frame">
+                  <video controls muted playsinline preload="metadata" poster="static/images/visual-variation/hdr/PickThinObjectFromContainer.jpg">
+                    <source src="static/videos/visual-variation/hdr/PickThinObjectFromContainer.mp4" type="video/mp4">
+                  </video>
+                  <span class="replace-note">hdr/PickThinObjectFromContainer.mp4</span>
+                </div>
+                <h4><code>PickThinObjectFromContainer</code></h4>
+              </article>
+            </div>
+          </div>
+      </div>
+    </section>
+
+    <section id="robot-variation" class="section">
+      <div class="container">
+        <div class="section-heading">
+          <h2>Robot Variation</h2>
+          <p class="section-lead">
+            DexVerse currently supports <strong>3 robot arms</strong> (Franka Research 3, UR10e, xArm 7) and
+            <strong>6 dexterous hands</strong> (Sharpa Wave, WUJI Hand, Shadow Hand, Inspire Hand, Allegro
+            Hand, LEAP Hand), spanning diverse kinematics, degrees of freedom, joint limits, and hand
+            morphologies. Each embodiment is defined by a compact and modular specification, and every
+            hand also has a floating-wrist variant. The modular design of the system also support custom robot arms and hands to be later added by users. The grid below compares the same task across arm&ndash;hand
+            combinations. 
+          </p>
+        </div>
+
+        <!--
+          TODO:
+          The matrix is generated from the 3 arms and 6 hands defined in static/js/site.js.
+          Put each robot variation demo at:
+            static/videos/robot-variation/{arm-slug}__{hand-slug}.mp4
+          Put each poster frame at:
+            static/images/robot-variation/{arm-slug}__{hand-slug}.jpg
+        -->
+        <div id="robot-matrix" class="robot-matrix" aria-label="Robot arm and hand combinations">
+          <p class="loading-note">Loading robot variation matrix...</p>
+        </div>
+      </div>
+    </section>
+
+    <section id="long-horizon" class="section section-muted">
+      <div class="container">
+        <div class="section-heading">
+          <h2>Long-Horizon Tasks</h2>
+          <p class="section-lead">
+            Five multi-stage long-horizon tasks that chain skills into temporally
+            extended procedures. We provide <strong>20 teleoperated demonstration trajectories</strong> for
+            each long-horizon task. Use the arrows to scroll through the showcase.
+          </p>
+        </div>
+
+        <!--
+          NOTE:
+          Long-horizon cards are generated from the "Long-horizon" tasks in
+          static/data/tasks.js. Put each showcase video at:
+            static/videos/task-variation/{TaskName}.mp4
+          Put each poster frame at:
+            static/images/task-variation/{TaskName}.jpg
+          Example:
+            static/videos/task-variation/MakeCoffee.mp4
+        -->
+        <div class="carousel" data-carousel>
+          <button class="carousel-button" type="button" data-carousel-prev aria-label="Previous long-horizon demos">‹</button>
+          <div class="carousel-viewport">
+            <div id="long-horizon-grid" class="demo-grid carousel-track">
+              <p class="loading-note">Loading long-horizon showcase...</p>
+            </div>
+          </div>
+          <button class="carousel-button" type="button" data-carousel-next aria-label="Next long-horizon demos">›</button>
+        </div>
+      </div>
+    </section>
+
+    <section id="system-design" class="section">
+      <div class="container">
+        <div class="section-heading">
+          <h2>System Design</h2>
+        </div>
+
+        <p class="section-lead">
+          We made DexVerse a configuration-driven, modular simulation benchmark on Isaac Lab where tasks, embodiments, and visual conditions are decoupled so each can be swapped or extended independently.
+        </p>
+
+        <div class="system-layout">
+          <div class="system-copy">
+            <ul class="spec-list">
+              <li>
+                <strong>Config-driven.</strong> Built on Isaac Lab's manager-based RL environment;
+                observations, actions, events, and success predicates are config classes &mdash; change
+                cameras, randomization, or thresholds via overrides, not code.
+              </li>
+              <li>
+                <strong>Inherit &amp; override.</strong> Main Base &rarr; Task Family &rarr; Task; each task
+                overrides only its object, target, and success threshold, keeping tasks decoupled from
+                embodiments.
+              </li>
+              <li>
+                <strong>Embodiments.</strong> 3 arms &times; 6 dexterous hands paired through a compact
+                arm&ndash;hand spec, each with a floating-wrist variant.
+              </li>
+              <li>
+                <strong>Data.</strong> VR teleoperation (Apple Vision Pro + dex-retargeting) yields
+                <strong>3,180 demos</strong> &mdash; 50 per short-horizon task, 20 per long-horizon task, and 1
+                per short-horizon task on each of 5 additional robot embodiments &mdash; with synced
+                proprioceptive, RGB, depth, point-cloud, and state observations, replayed locally for portable,
+                drift-free playback.
+              </li>
+            </ul>
+          </div>
+
+          <div class="system-figures">
+            <figure class="figure-block">
+              <div class="figure-frame">
+                <img src="static/images/system-design.png" alt="DexVerse modular environment architecture" loading="lazy">
+              </div>
+              <figcaption>System diagram: modular environment architecture (inherit-and-override).</figcaption>
+            </figure>
+
+            <figure class="figure-block">
+              <div class="figure-frame">
+                <img src="static/images/teleop-system.png" alt="DexVerse VR teleoperation data-collection system" loading="lazy">
+              </div>
+              <figcaption>Teleoperation system: VR-based data collection and retargeting.</figcaption>
+            </figure>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="baselines" class="section section-muted">
+      <div class="container">
+        <div class="section-heading">
+          <h2>Baselines</h2>
+          <p class="section-lead">
+            We also provide baseline performance for 19 tasks as a reference for future research. Four policies are evaluated: &pi;<sub>0.5</sub>, OpenVLA, DP3, and DP. We evaluated each task for 50 rollouts and report the success rate in the table below. Best mean success is just
+            <strong>0.34</strong>, and no method dominates all categories. Best per task in <strong>bold</strong>.
+          </p>
+        </div>
+
+        <!--
+          NOTE: Values transcribed from Table 3 of the submission. Keep these synchronized
+          with the PDF; update if the final results table changes.
+        -->
+        <div class="table-wrap">
+          <table class="baseline-table">
+            <thead>
+              <tr>
+                <th scope="col">Category</th>
+                <th scope="col">Task</th>
+                <th scope="col">&pi;<sub>0.5</sub></th>
+                <th scope="col">OpenVLA</th>
+                <th scope="col">DP3</th>
+                <th scope="col">DP</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr><th scope="row" rowspan="7">Pick-and-Lift</th><td class="task-cell">BimanualLiftCarton</td><td><strong>1.00</strong></td><td>0.60</td><td>0.90</td><td>0.94</td></tr>
+              <tr><td class="task-cell">BimanualLiftTray</td><td><strong>0.84</strong></td><td>0.72</td><td>0.56</td><td>0.60</td></tr>
+              <tr><td class="task-cell">GraspBleach</td><td>0.10</td><td>0.06</td><td><strong>0.32</strong></td><td>0.10</td></tr>
+              <tr><td class="task-cell">GraspCup</td><td>0.16</td><td>0.08</td><td>0.22</td><td><strong>0.50</strong></td></tr>
+              <tr><td class="task-cell">GraspKettle</td><td>0.58</td><td>0.16</td><td>0.80</td><td><strong>0.90</strong></td></tr>
+              <tr><td class="task-cell">GraspPan</td><td>0.06</td><td>0.02</td><td>0.16</td><td><strong>0.52</strong></td></tr>
+              <tr><td class="task-cell">RetrieveCup</td><td>0.02</td><td>0.02</td><td><strong>0.06</strong></td><td>0.04</td></tr>
+
+              <tr><th scope="row" rowspan="6">Articulated</th><td class="task-cell">OpenFaucet</td><td><strong>0.84</strong></td><td>0.36</td><td>0.76</td><td>0.28</td></tr>
+              <tr><td class="task-cell">OpenFlatFolder</td><td>0.00</td><td>0.00</td><td><strong>0.18</strong></td><td>0.16</td></tr>
+              <tr><td class="task-cell">OpenLaptop</td><td>0.04</td><td>0.02</td><td>0.02</td><td><strong>0.10</strong></td></tr>
+              <tr><td class="task-cell">OpenStapler</td><td>0.86</td><td><strong>0.92</strong></td><td>0.84</td><td>0.86</td></tr>
+              <tr><td class="task-cell">SlideUtilityKnife</td><td>0.00</td><td>0.00</td><td>0.00</td><td>0.00</td></tr>
+              <tr><td class="task-cell">SqueezeScissors</td><td><strong>0.36</strong></td><td>0.22</td><td>0.20</td><td>0.00</td></tr>
+
+              <tr><th scope="row" rowspan="3">Tool Use</th><td class="task-cell">FunctionalHammerStrike</td><td>0.22</td><td>0.18</td><td><strong>0.26</strong></td><td>0.00</td></tr>
+              <tr><td class="task-cell">FunctionalPourCan</td><td>0.04</td><td>0.10</td><td>0.14</td><td><strong>0.38</strong></td></tr>
+              <tr><td class="task-cell">FunctionalPourMug</td><td>0.52</td><td>0.16</td><td><strong>0.64</strong></td><td>0.26</td></tr>
+
+              <tr><th scope="row" rowspan="3">Precision</th><td class="task-cell">InsertPen</td><td>0.06</td><td>0.00</td><td><strong>0.08</strong></td><td>0.00</td></tr>
+              <tr><td class="task-cell">PushSmallSphereObstacleSlope</td><td><strong>0.82</strong></td><td>0.08</td><td>0.28</td><td>0.36</td></tr>
+              <tr><td class="task-cell">PushT</td><td>0.00</td><td>0.00</td><td>0.00</td><td>0.00</td></tr>
+
+              <tr class="summary-row"><th scope="row" colspan="2">Mean</th><td><strong>0.34</strong></td><td>0.19</td><td><strong>0.34</strong></td><td>0.32</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <p class="table-note">Online success rate over 50 rollouts per task. Observation modalities: &pi;<sub>0.5</sub> / OpenVLA / DP use RGB + state; DP3 uses point clouds.</p>
+      </div>
+    </section>
+
+    <section id="bibtex" class="section">
+      <div class="container narrow">
+        <div class="section-heading">
+          <h2>BibTeX</h2>
+        </div>
+
+        <!-- TODO: Replace the arXiv ID placeholder (XXXX.XXXXX) once the paper is on arXiv. -->
+        <pre class="bibtex-block"><code>@article{yao2026dexverse,
+  title   = {DexVerse: A Modular Benchmark for Multi-Task, Multi-Embodiment Dexterous Manipulation},
+  author  = {Yao, Yunchao and Xu, Zhuxiu and Zhang, Tianqi and Li, Sikai and Wei, Zhenyu and Chen, Feng and Huang, Dihong and Wan, Kechang and Ma, Chenyang and Zhao, Shuqi and Gao, Shenghua and Tomizuka, Masayoshi and Ma, Yi and Ding, Mingyu},
+  journal = {arXiv preprint arXiv:XXXX.XXXXX},
+  year    = {2026}
+}</code></pre>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <div class="container">
+      <p>&copy; 2026 The DexVerse Authors.</p>
+    </div>
+  </footer>
+
+  <script src="static/data/tasks.js"></script>
+  <script src="static/js/site.js"></script>
+</body>
+</html>
